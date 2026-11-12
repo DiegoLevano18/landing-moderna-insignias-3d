@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../config';
+---
+<Base title="Página no encontrada | MARQA" noindex>
+  <div class="page">
+    <header class="page-head">
+      <h1>No encontramos esa página</h1>
+      <p class="lead">Puede que el enlace haya cambiado.</p>
+      <p><a class="btn" href={url('/')}>Volver al inicio</a></p>
+    </header>
+  </div>
+</Base>

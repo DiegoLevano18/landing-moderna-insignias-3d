@@ -1,0 +1,171 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Badge from '../components/Badge.astro';
+import { SITE, url } from '../config';
+
+const acabados = (await getCollection('acabados')).sort((a, b) => a.data.orden - b.data.orden);
+
+const pasos = [
+  { t: 'Tu diseño', d: 'Partimos de tu logo o escudo. Lo redibujamos en vectores y definimos qué partes van planas y cuáles en relieve.' },
+  { t: 'La base', d: 'Elegimos el soporte: tela tatami, TPU liso o fieltro. Debajo va el film termoadhesivo que la fijará a la prenda.' },
+  { t: 'El color', d: 'Se imprime o se flockea la cara de la pieza con los colores exactos de tu marca.' },
+  { t: 'El relieve', d: 'Borde y emblema se moldean en TPU con distintas alturas y se cortan al contorno. Aquí la insignia gana volumen.' },
+  { t: 'El acabado', d: 'Mate, dorado o holográfico: el mismo diseño cambia por completo. Pruébalo aquí.' },
+  { t: 'Sobre la prenda', d: 'Calor y presión durante unos segundos. La insignia queda integrada a la tela, sin costuras.' },
+  { t: 'Tu lote, listo', d: 'Revisamos pieza por pieza, empacamos y enviamos tu pedido con su guía de aplicación.' },
+];
+
+const usos = [
+  ['Deportivas', 'Escudos de clubes, academias y equipos.'],
+  ['Corporativas', 'Empresas, áreas y equipos de trabajo.'],
+  ['Institucionales', 'Organizaciones y entidades.'],
+  ['Escolares', 'Escudos, promociones y distintivos.'],
+  ['Operativas', 'Seguridad, logística y operaciones.'],
+  ['Conmemorativas', 'Aniversarios, eventos y fechas especiales.'],
+  ['Promocionales', 'Campañas, lanzamientos y activaciones.'],
+  ['Coleccionables', 'Ediciones especiales y merchandising.'],
+];
+const superficies = ['Polos y camisetas', 'Chaquetas', 'Gorras', 'Mochilas', 'Calzado', 'Uniformes', 'Bolsos', 'Merchandising'];
+
+const faqs = [
+  { q: '¿Qué necesito para pedir una cotización?', a: 'Tu logo o diseño (idealmente en vector o en una imagen nítida), el tamaño aproximado, el acabado que te interesa y la cantidad. Si no tienes claro el acabado, te recomendamos uno según la prenda.' },
+  { q: '¿Qué diferencia hay entre TPU 2D y TPU 3D?', a: 'En el TPU 2D todo el diseño queda en una sola altura, con impresión de alta definición. En el TPU 3D el borde y los elementos principales sobresalen de la base y se sienten al tacto.' },
+  { q: '¿Cómo se aplican las insignias?', a: 'La mayoría son termoadhesivas: se fijan con plancha transfer aplicando calor y presión por unos segundos. Los acabados como bordado, cuero o chenille también pueden ir cosidos.' },
+  { q: '¿Resisten el lavado?', a: 'Sí, bien aplicadas soportan el uso y los lavados normales. Recomendamos lavar la prenda del revés, con agua fría y sin secadora.' },
+  { q: '¿Puedo ver una muestra antes de producir?', a: 'Antes de fabricar te enviamos una prueba digital del diseño para tu aprobación. Consúltanos por muestras físicas al cotizar.' },
+];
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const siteSchema = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: new URL(url('/'), Astro.site).href, inLanguage: 'es' };
+---
+<Base title="MARQA | Insignias y parches personalizados en TPU 3D" schema={[siteSchema, faqSchema]}>
+  <div class="story">
+    <div class="stage">
+      <Badge class="poster" />
+      <canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="panels">
+      <section class="panel hero">
+        <div class="panel-body">
+          <p class="eyebrow">Insignias · Parches · Escudos</p>
+          <h1>La pieza que termina la prenda</h1>
+          <p class="lead">Fabricamos insignias personalizadas en TPU 3D, flock, bordado y más. Baja y mira cómo se arma una, de tu diseño a la entrega.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#cotizar">Cotizar mi insignia</a>
+            <a class="btn btn-ghost" href="#proceso">Ver el proceso</a>
+          </div>
+          <ul class="facts">
+            <li><strong>100%</strong><span>a tu medida</span></li>
+            <li><strong>{acabados.length}</strong><span>acabados</span></li>
+            <li><strong>3D</strong><span>relieve real</span></li>
+          </ul>
+        </div>
+      </section>
+      {pasos.map((p, i) => (
+        <section class="panel" id={i === 0 ? 'proceso' : undefined}>
+          <div class="panel-body">
+            <span class="step" aria-hidden="true">0{i + 1}</span>
+            <h2>{p.t}</h2>
+            <p class="lead">{p.d}</p>
+            {i === 4 && (
+              <div class="finishes" role="group" aria-label="Acabado de la insignia">
+                <button type="button" data-finish="mate" aria-pressed="false">Mate</button>
+                <button type="button" data-finish="dorado" aria-pressed="true">Dorado</button>
+                <button type="button" data-finish="holo" aria-pressed="false">Holográfico</button>
+              </div>
+            )}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <section class="section on-bone" id="acabados">
+    <div class="section-head">
+      <p class="eyebrow">Acabados</p>
+      <h2>Un mismo diseño, ocho maneras de sentirlo</h2>
+      <p class="lead">El material cambia cómo se ve, cómo se toca y dónde conviene usarlo.</p>
+    </div>
+    <div class="grid">
+      {acabados.map((a) => (
+        <a class="card" href={url(`/acabados/${a.id}/`)}>
+          <div class:list={['swatch', `tx-${a.data.textura}`]}><i></i></div>
+          <span class="tag">{a.data.familia}</span>
+          <h3>{a.data.title}</h3>
+          <p>{a.data.resumen}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section" id="aplicaciones">
+    <div class="compare">
+      <div class="section-head">
+        <p class="eyebrow">Antes y después</p>
+        <h2>Una prenda lisa no dice de quién es</h2>
+        <p class="lead">Desliza para ver el cambio. La insignia va en el pecho, la manga, la gorra o donde tu marca lo necesite.</p>
+        <ul class="chips">{superficies.map((s) => <li>{s}</li>)}</ul>
+      </div>
+      <div>
+        <div class="tee">
+          <svg viewBox="0 0 300 300" aria-hidden="true"><path class="tee-shape" d="M95 30 60 45 10 95l35 40 25-20v165h160V115l25 20 35-40-50-50-35-15q-55 40-110 0Z"/><path class="tee-collar" d="M95 30q55 56 110 0"/></svg>
+          <div class="after">
+            <svg viewBox="0 0 300 300" aria-hidden="true"><path class="tee-shape" d="M95 30 60 45 10 95l35 40 25-20v165h160V115l25 20 35-40-50-50-35-15q-55 40-110 0Z"/><path class="tee-collar" d="M95 30q55 56 110 0"/></svg>
+            <Badge />
+          </div>
+          <input type="range" min="0" max="100" value="50" aria-label="Comparar la prenda sin insignia y con insignia" />
+        </div>
+        <div class="tee-labels"><span>Antes</span><span>Después</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-bone">
+    <div class="section-head">
+      <p class="eyebrow">Para quién</p>
+      <h2>Insignias según su uso</h2>
+      <p class="lead">La finalidad define la pieza; el material se elige después.</p>
+    </div>
+    <ul class="uses">{usos.map(([t, d]) => <li><strong>{t}</strong><span>{d}</span></li>)}</ul>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2>Lo que conviene saber antes de pedir</h2>
+    </div>
+    <div class="faq">
+      {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+    </div>
+  </section>
+
+  <section class="section on-bone" id="cotizar">
+    <div class="quote">
+      <div class="section-head">
+        <p class="eyebrow">Cotización</p>
+        <h2>Cuéntanos qué quieres fabricar</h2>
+        <p class="lead">Completa los datos y continúa por WhatsApp para enviarnos tu logo. Te respondemos con una propuesta de acabado y precio.</p>
+      </div>
+      <form class="form" id="quote-form" data-wa={SITE.whatsapp}>
+        <label>Nombre<input name="nombre" required maxlength="80" autocomplete="name" /></label>
+        <label>Cantidad<input name="cantidad" type="number" min="1" max="1000000" required inputmode="numeric" /></label>
+        <label>Tipo de pieza
+          <select name="tipo"><option>Escudo deportivo</option><option>Logo de marca</option><option>Insignia institucional</option><option>Parche promocional</option><option>Otro</option></select>
+        </label>
+        <label>Acabado
+          <select name="acabado"><option>Aún no lo sé</option>{acabados.map((a) => <option>{a.data.title}</option>)}</select>
+        </label>
+        <label class="wide">Detalle<textarea name="detalle" maxlength="600" placeholder="Tamaño, colores, prenda donde irá…"></textarea></label>
+        <div class="wide"><button class="btn" type="submit">Continuar por WhatsApp</button></div>
+        <p class="wide note">Tus datos solo se usan para abrir el chat; no se guardan en este sitio.</p>
+      </form>
+    </div>
+  </section>
+</Base>
+<script>
+  import '../scripts/home.ts';
+</script>

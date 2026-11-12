@@ -1,0 +1,81 @@
+---
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '@fontsource/barlow/latin-400.css';
+import '@fontsource/barlow/latin-500.css';
+import '../styles/global.css';
+import { SITE, url, waLink } from '../config';
+
+interface Props {
+  title: string;
+  description?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: object[];
+}
+const { title, description = SITE.description, type = 'website', noindex = false, schema = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url('/og.png'), Astro.site);
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: new URL(url('/'), Astro.site).href,
+  logo: new URL(url('/favicon.svg'), Astro.site).href,
+  description: SITE.description,
+  ...(SITE.social.length ? { sameAs: SITE.social } : {}),
+};
+const nav = [
+  { href: url('/#proceso'), label: 'Proceso' },
+  { href: url('/acabados/'), label: 'Acabados' },
+  { href: url('/#aplicaciones'), label: 'Aplicaciones' },
+  { href: url('/blog/'), label: 'Blog' },
+];
+---
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#14161A" />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {[org, ...schema].map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s).replace(/</g, '\\u003c')} />)}
+  </head>
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <a class="brand" href={url('/')} aria-label={`${SITE.name}, inicio`}>MARQA</a>
+      <nav aria-label="Principal">
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      </nav>
+      <a class="btn btn-small" href={url('/#cotizar')}>Cotizar</a>
+    </header>
+    <main id="contenido">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <p class="brand">MARQA</p>
+        <p>{SITE.tagline}</p>
+      </div>
+      <nav aria-label="Pie">
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+        <a href={waLink('Hola MARQA, quiero cotizar insignias.')} rel="noopener">WhatsApp</a>
+      </nav>
+      <p class="fine">© {new Date().getFullYear()} {SITE.name}.</p>
+    </footer>
+  </body>
+</html>

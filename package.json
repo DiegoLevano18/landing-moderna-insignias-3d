@@ -1,0 +1,26 @@
+{
+  "name": "marqa-insignias-3d",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "cms": "node scripts/copy-cms.mjs",
+    "dev": "npm run cms && astro dev",
+    "build": "npm run cms && astro check && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/barlow": "^5.3.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@sveltia/cms": "^0.263.0",
+    "astro": "^7.4.11",
+    "gsap": "^3.15.1",
+    "three": "^0.187.0",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0"
+  }
+}

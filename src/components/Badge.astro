@@ -1,0 +1,12 @@
+---
+// Insignia de la casa en SVG: imagen inicial del recorrido 3D, respaldo sin WebGL y demostración sobre prenda.
+interface Props { class?: string; title?: string }
+const { class: cls, title } = Astro.props;
+---
+<svg class:list={['badge', cls]} viewBox="-1.25 -1.45 2.5 3.1" role={title ? 'img' : undefined} aria-label={title} aria-hidden={title ? undefined : 'true'}>
+  <path class="badge-base" d="M-.82-1.2H.82Q1-1.2 1-1.02V.15C1 .85.45 1.15 0 1.4-.45 1.15-1 .85-1 .15V-1.02Q-1-1.2-.82-1.2Z" />
+  <path class="badge-field" transform="scale(.86)" d="M-.82-1.2H.82Q1-1.2 1-1.02V.15C1 .85.45 1.15 0 1.4-.45 1.15-1 .85-1 .15V-1.02Q-1-1.2-.82-1.2Z" />
+  <circle class="badge-ring" cx="0" cy="-.22" r=".38" />
+  <path class="badge-tail" d="M.1-.1h.17l.3.44H.4z" />
+  <text class="badge-word" x="0" y=".82" text-anchor="middle">MARQA</text>
+</svg>

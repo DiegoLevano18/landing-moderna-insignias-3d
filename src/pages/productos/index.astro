@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { url } from '../../config';
+const productos = await getCollection('productos', (p) => p.data.published);
+const precio = (n: number, c: string) => new Intl.NumberFormat('es-PE', { style: 'currency', currency: c }).format(n);
+---
+<Base title="Catálogo de insignias | MARQA" description="Catálogo de insignias y parches listos para comprar." noindex={productos.length === 0}>
+  <div class="page">
+    <header class="page-head">
+      <p class="crumbs"><a href={url('/')}>Inicio</a> / Catálogo</p>
+      <h1>Catálogo</h1>
+      <p class="lead">{productos.length ? 'Piezas listas para comprar.' : 'Estamos preparando el catálogo con compra en línea. Mientras tanto, cotiza tu insignia a medida.'}</p>
+      {productos.length === 0 && <p><a class="btn" href={url('/#cotizar')}>Cotizar</a></p>}
+    </header>
+    <div class="grid">
+      {productos.map((p) => (
+        <div class="card">
+          {p.data.images[0] && <img src={url(p.data.images[0])} alt={p.data.title} loading="lazy" />}
+          <h2 class="h3">{p.data.title}</h2>
+          <p>{p.data.description}</p>
+          <p><strong>{precio(p.data.price, p.data.currency)}</strong></p>
+        </div>
+      ))}
+    </div>
+  </div>
+</Base>

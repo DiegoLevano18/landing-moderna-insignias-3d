@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { url } from '../../config';
+const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+const fmt = new Intl.DateTimeFormat('es-PE', { dateStyle: 'long', timeZone: 'UTC' });
+---
+<Base title="Blog de insignias y parches | MARQA" description="Guías sobre materiales, aplicación y cuidado de insignias y parches personalizados.">
+  <div class="page">
+    <header class="page-head">
+      <p class="crumbs"><a href={url('/')}>Inicio</a> / Blog</p>
+      <h1>Blog</h1>
+      <p class="lead">Guías de materiales, aplicación y cuidado.</p>
+    </header>
+    <div class="posts">
+      {posts.map((p) => (
+        <a href={url(`/blog/${p.id}/`)}>
+          <time datetime={p.data.date.toISOString()}>{fmt.format(p.data.date)}</time>
+          <h2>{p.data.title}</h2>
+          <p>{p.data.description}</p>
+        </a>
+      ))}
+      {posts.length === 0 && <p class="lead">Pronto publicaremos el primer artículo.</p>}
+    </div>
+  </div>
+</Base>

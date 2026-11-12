@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { url } from '../../config';
+const acabados = (await getCollection('acabados')).sort((a, b) => a.data.orden - b.data.orden);
+---
+<Base title="Acabados para insignias y parches | MARQA" description="Guía de acabados para insignias personalizadas: TPU 3D, TPU plano, tatami, flock, holográfico, bordado, cuero y chenille. Cuándo conviene cada uno.">
+  <div class="page">
+    <header class="page-head">
+      <p class="crumbs"><a href={url('/')}>Inicio</a> / Acabados</p>
+      <h1>Guía de acabados</h1>
+      <p class="lead">Cada material tiene un tacto, una lectura y un uso ideal. Elige por lo que necesita tu prenda.</p>
+    </header>
+    <div class="grid">
+      {acabados.map((a) => (
+        <a class="card" href={url(`/acabados/${a.id}/`)}>
+          <div class:list={['swatch', `tx-${a.data.textura}`]}><i></i></div>
+          <span class="tag">{a.data.familia}</span>
+          <h2 class="h3">{a.data.title}</h2>
+          <p>{a.data.resumen}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
