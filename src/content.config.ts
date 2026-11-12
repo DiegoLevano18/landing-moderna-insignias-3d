@@ -25,19 +25,4 @@ const blog = defineCollection({
   }),
 });
 
-// Preparado para el catálogo con carrito: aún sin productos publicados.
-const productos = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/productos' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    price: z.number().nonnegative(),
-    currency: z.string().default('PEN'),
-    images: z.array(z.string()).default([]),
-    acabado: z.string().optional(),
-    stock: z.number().int().nonnegative().default(0),
-    published: z.boolean().default(false),
-  }),
-});
-
-export const collections = { acabados, blog, productos };
+export const collections = { acabados, blog };

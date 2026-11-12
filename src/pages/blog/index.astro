@@ -1,8 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPosts } from '../../lib/content';
 import Base from '../../layouts/Base.astro';
 import { url } from '../../config';
-const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+const posts = await getPosts();
 const fmt = new Intl.DateTimeFormat('es-PE', { dateStyle: 'long', timeZone: 'UTC' });
 ---
 <Base title="Blog de insignias y parches | MARQA" description="Guías sobre materiales, aplicación y cuidado de insignias y parches personalizados.">

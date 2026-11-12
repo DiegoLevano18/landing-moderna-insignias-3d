@@ -1,10 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import { getAcabados } from '../lib/content';
 import Base from '../layouts/Base.astro';
 import Badge from '../components/Badge.astro';
 import { SITE, url } from '../config';
 
-const acabados = (await getCollection('acabados')).sort((a, b) => a.data.orden - b.data.orden);
+const acabados = await getAcabados();
 
 const pasos = [
   { t: 'Tu diseño', d: 'Partimos de tu logo o escudo. Lo redibujamos en vectores y definimos qué partes van planas y cuáles en relieve.' },

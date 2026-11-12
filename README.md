@@ -1,6 +1,6 @@
 # MARQA · Insignias 3D
 
-Sitio de MARQA hecho con [Astro](https://astro.build): recorrido 3D con scroll (Three.js + GSAP), guía de acabados, blog y panel de administración.
+Sitio de MARQA hecho con [Astro](https://astro.build): recorrido 3D con scroll (Three.js + GSAP), guía de acabados, y blog.
 
 ## Uso
 
@@ -17,27 +17,29 @@ npm run build    # revisa tipos y genera dist/
 | WhatsApp, nombre, descripción, redes | `src/config.ts` |
 | Colores (carbón, hueso, latón) y tipografía | `src/styles/global.css` |
 | Escena 3D y pasos del scroll | `src/scripts/story.ts` |
-| Acabados, blog y productos | `src/content/` o el panel `/admin/` |
-
-## Panel de administración
-
-`/admin/` abre Sveltia CMS. Se entra con una cuenta de GitHub que tenga permiso de escritura en este repositorio
-(token personal con permiso *Contents: read and write* solo sobre este repo). Cada cambio se guarda como un commit y
-vuelve a desplegar el sitio. La rama de trabajo se define en `public/admin/config.yml`.
+| Acabados y blog | `src/content/` |
 
 ## Despliegue
 
-`.github/workflows/deploy.yml` publica en GitHub Pages en cada push. Requiere activar
-*Settings → Pages → Source: GitHub Actions* una sola vez.
+Queda para más adelante. `.github/workflows/deploy.yml` ya está listo para GitHub Pages, pero solo se ejecuta a mano.
+Para activarlo: *Settings → Pages → Source: GitHub Actions* y descomentar el disparador `push` del workflow.
+
+## Conexión futura con Supabase
+
+Hoy el sitio es 100 % estático y no tiene backend. Está preparado para sumarlo sin rehacer páginas:
+
+- Todo el contenido se pide desde `src/lib/content.ts`; ese es el único archivo que cambia al leer desde Supabase.
+- Los esquemas de `src/content.config.ts` (acabados, blog) sirven de modelo para las tablas.
+- `.env.example` reserva las variables `PUBLIC_SUPABASE_URL` y `PUBLIC_SUPABASE_ANON_KEY`.
+- Al conectar, hay que añadir el dominio del proyecto a `connect-src` en `astro.config.mjs` y activar permisos por fila (RLS) en cada tabla.
 
 ## Seguridad
 
 - Política CSP generada por Astro con hashes: no se ejecutan scripts ni estilos externos.
 - Sin claves en el repositorio. El formulario de cotización no envía datos a ningún servidor: abre WhatsApp.
-- El panel se sirve desde el propio sitio con versión fijada en `package-lock.json`.
 
 ## Pendiente
 
 - Número real de WhatsApp en `src/config.ts`.
 - Fotos reales de producto.
-- Carrito y pasarela de pago (el pago necesita un servicio de servidor; GitHub Pages solo sirve archivos estáticos).
+- Backend (Supabase), panel de administración, carrito y pasarela de pago.

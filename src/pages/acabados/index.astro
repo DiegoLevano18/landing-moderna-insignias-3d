@@ -1,8 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
+import { getAcabados } from '../../lib/content';
 import Base from '../../layouts/Base.astro';
 import { url } from '../../config';
-const acabados = (await getCollection('acabados')).sort((a, b) => a.data.orden - b.data.orden);
+const acabados = await getAcabados();
 ---
 <Base title="Acabados para insignias y parches | MARQA" description="Guía de acabados para insignias personalizadas: TPU 3D, TPU plano, tatami, flock, holográfico, bordado, cuero y chenille. Cuándo conviene cada uno.">
   <div class="page">

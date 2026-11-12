@@ -10,7 +10,7 @@ export default defineConfig({
   site,
   base,
   trailingSlash: 'always',
-  integrations: [sitemap({ filter: (page) => !page.includes('/admin') })],
+  integrations: [sitemap()],
   security: {
     csp: {
       directives: [
