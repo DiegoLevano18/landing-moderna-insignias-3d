@@ -21,8 +21,7 @@ npm run build    # revisa tipos y genera dist/
 
 ## Despliegue
 
-Queda para más adelante. `.github/workflows/deploy.yml` ya está listo para GitHub Pages, pero solo se ejecuta a mano.
-Para activarlo: *Settings → Pages → Source: GitHub Actions* y descomentar el disparador `push` del workflow.
+`.github/workflows/deploy.yml` publica en GitHub Pages en cada push.
 
 ## Conexión futura con Supabase
 

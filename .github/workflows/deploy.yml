@@ -1,9 +1,8 @@
 name: Desplegar en GitHub Pages
 
-# Por ahora solo manual. Cuando GitHub Pages esté activado, agrega aquí:
-#   push:
-#     branches: [main]
 on:
+  push:
+    branches: [main, ccr-d91dc238-fafrax]
   workflow_dispatch:
 
 permissions:
